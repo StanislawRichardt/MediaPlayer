@@ -25,14 +25,15 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.myapplication.ui.eventscreen.EventListViewModel
 import com.example.myapplication.ui.eventscreen.EventScreen
 import com.example.myapplication.ui.playbackscreen.PlaybackScreen
-import com.example.myapplication.ui.playbackscreen.PlaybackViewModel
 import com.example.myapplication.ui.schedulescreen.ScheduleListViewModel
 import com.example.myapplication.ui.schedulescreen.ScheduleScreen
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -43,9 +44,8 @@ fun currentRoute(navController: NavController): String?{
     return navBackStackEntry?.destination?.route
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PortfolioApp (eventListViewModel: EventListViewModel, scheduleListViewModel:ScheduleListViewModel, playbackViewModel: PlaybackViewModel) {
+fun PortfolioApp (eventListViewModel: EventListViewModel, scheduleListViewModel:ScheduleListViewModel) {
     val navController = rememberNavController()
 
     MyApplicationTheme {
@@ -56,8 +56,9 @@ fun PortfolioApp (eventListViewModel: EventListViewModel, scheduleListViewModel:
                 composable("events"){
                     EventScreen(eventListViewModel, navController)
                 }
-                composable("playback"){
-                    PlaybackScreen(playbackViewModel)
+                composable("playback/{videoUrl}",
+                    arguments = listOf(navArgument("videoUrl") { type = NavType.StringType })){backStackEntry ->
+                    PlaybackScreen(backStackEntry.arguments?.getString("videoUrl")!!, navController)
                 }
                 composable("schedule"){
                     ScheduleScreen(scheduleListViewModel,navController)

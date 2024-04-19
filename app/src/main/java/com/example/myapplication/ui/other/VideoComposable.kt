@@ -25,11 +25,21 @@ import com.example.myapplication.R
 import com.example.myapplication.model.UIModel
 import com.example.myapplication.model.VideoModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import java.net.URLEncoder
 
 @Composable
 fun VideoComposable(video: UIModel, navController: NavController){
 
     val thumbnail = video.image?.asImageBitmap()
+
+    val imageModifier = if(video.videoUrl != null){
+        Modifier
+            .clickable(
+                enabled = true,
+                onClick = { navController.navigate("playback/${URLEncoder.encode(video.videoUrl, "UTF-8")}")})
+    }else{
+        Modifier
+    }
 
     MyApplicationTheme {
         Row(Modifier.padding(10.dp))  {
@@ -37,21 +47,14 @@ fun VideoComposable(video: UIModel, navController: NavController){
                 Image(
                     bitmap = thumbnail,
                     contentDescription = "Video picture",
-                    Modifier
-                        .clickable(enabled = true,
-                        onClick = {navController.navigate("playback")})
-                        .size(120.dp)
-                        .padding(0.dp,0.dp,10.dp,0.dp),
+                    modifier = imageModifier.size(120.dp).padding(0.dp,0.dp,10.dp,0.dp),
                     alignment = Alignment.TopStart
                 )
             }else{
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = "Video picture",
-                    Modifier.clickable(
-                        enabled = true,
-                        onClick = {navController.navigate("playback")}
-                    )
+                    modifier = imageModifier
                 )
             }
 

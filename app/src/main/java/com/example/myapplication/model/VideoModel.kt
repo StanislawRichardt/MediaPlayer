@@ -6,6 +6,6 @@ data class VideoModel(
     val title: String? = null,
     val subtitle: String? = null,
     val date: String? = null,
-    val image: String? = null,
+    val imageUrl: String? = null,
     val videoUrl: String? = null
 )

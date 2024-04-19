@@ -14,6 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import java.net.URL
 
 class EventListViewModel:ViewModel() {
     val streams = MutableStateFlow<MutableList<UIModel>>(mutableListOf())
@@ -27,7 +28,7 @@ class EventListViewModel:ViewModel() {
                         event.title,
                         event.subtitle,
                         event.date,
-                        null,
+                        convertImageURLIntoBitmap(event.imageUrl),
                         event.videoUrl
                     )
                     )
@@ -39,25 +40,11 @@ class EventListViewModel:ViewModel() {
     }
 
     fun convertImageURLIntoBitmap(url: String?): Bitmap? {
-        val connection: Retrofit? = url?.let { Retrofit.Builder().baseUrl(it).build() }
-        var bitmap: Bitmap? = null
-        connection?.create(ImageProvider::class.java)?.downloadImage(url)?.enqueue(
-            object : Callback<ResponseBody> {
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    if (response.isSuccessful) {
-                        val inputStream = response.body()?.byteStream()
-                        bitmap = BitmapFactory.decodeStream(inputStream)
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    t.printStackTrace()
-                }
-
-            })
+        val bitmap: Bitmap?
+        val connection = URL(url).openConnection()
+        connection.connect()
+        val inputStream = connection.getInputStream()
+        bitmap = BitmapFactory.decodeStream(inputStream)
         return bitmap
     }
 }

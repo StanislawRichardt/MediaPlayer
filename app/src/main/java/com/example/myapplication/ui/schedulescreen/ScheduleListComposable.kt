@@ -20,7 +20,7 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 fun ScheduleScreen(scheduleListViewModel: ScheduleListViewModel, navController: NavController) {
 
     val mutableVideos = scheduleListViewModel.streams.collectAsStateWithLifecycle()
-    scheduleListViewModel.getScheduleList()
+//    scheduleListViewModel.fetchData()
     MyApplicationTheme {
         Scaffold(
             topBar = { Spacer(Modifier.height(20.dp)) },

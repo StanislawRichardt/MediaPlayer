@@ -25,16 +25,14 @@ fun VideoComposable(video: VideoModel, navController: NavController){
 
     MyApplicationTheme {
         Row  {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = "Video picture",
-                    Modifier.clickable(
-                        enabled = true,
-                        onClick = {navController.navigate("playback")}
-                    )
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = "Video picture",
+                Modifier.clickable(
+                    enabled = true,
+                    onClick = {navController.navigate("playback")}
                 )
-
-
+            )
             Column (Modifier.fillMaxHeight()) {
                 if(video.title != null){
                     Text(

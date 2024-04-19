@@ -4,6 +4,9 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.core.graphics.drawable.toDrawable
 import com.example.myapplication.model.VideoModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,6 +23,8 @@ object EventsCall:APICalls {
     }
 
     override fun onResponse(call: Call<List<VideoModel>>, response: Response<List<VideoModel>>) {
-        callback?.onResponseLoaded(response.body() ?: listOf())
+        CoroutineScope(Dispatchers.IO).launch {
+            callback?.onResponseLoaded(response.body() ?: listOf())
+        }
     }
 }

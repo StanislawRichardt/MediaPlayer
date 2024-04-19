@@ -2,6 +2,9 @@ package com.example.myapplication.api
 
 import android.util.Log
 import com.example.myapplication.model.VideoModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 
@@ -16,6 +19,8 @@ object ScheduleCall: APICalls {
     }
 
     override fun onResponse(call: Call<List<VideoModel>>, response: Response<List<VideoModel>>) {
-        callback?.onResponseLoaded(response.body() ?: listOf())
+        CoroutineScope(Dispatchers.IO).launch {
+            callback?.onResponseLoaded(response.body() ?: listOf())
+        }
     }
 }

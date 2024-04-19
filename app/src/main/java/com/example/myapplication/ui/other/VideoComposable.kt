@@ -21,7 +21,7 @@ import com.example.myapplication.model.VideoModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 @Composable
-fun VideoComposable(video: VideoModel, navController: NavController){
+fun VideoComposable(video: UIModel, navController: NavController){
 
     MyApplicationTheme {
         Row  {

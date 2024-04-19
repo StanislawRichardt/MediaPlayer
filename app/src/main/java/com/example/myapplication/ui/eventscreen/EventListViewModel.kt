@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.myapplication.api.EventsCall
 import com.example.myapplication.api.ImageProvider
 import com.example.myapplication.api.ResponseCallback
+import com.example.myapplication.model.UIModel
 import com.example.myapplication.model.VideoModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import okhttp3.ResponseBody
@@ -15,12 +16,24 @@ import retrofit2.Response
 import retrofit2.Retrofit
 
 class EventListViewModel:ViewModel() {
-    val streams = MutableStateFlow<List<VideoModel>>(emptyList())
+    val streams = MutableStateFlow<MutableList<UIModel>>(mutableListOf())
+    var rawData: MutableList<UIModel> = mutableListOf()
 
     fun fetchData(){
         EventsCall.start(object: ResponseCallback{
-            override fun onResponseLoaded(response: List<VideoModel>) {
-                streams.value = response
+            override suspend fun onResponseLoaded(response: List<VideoModel>) {
+                for(event in response){
+                    rawData.add(UIModel(
+                        event.title,
+                        event.subtitle,
+                        event.date,
+                        null,
+                        event.videoUrl
+                    )
+                    )
+                }
+                streams.emit(rawData)
+                rawData = mutableListOf()
             }
         })
     }

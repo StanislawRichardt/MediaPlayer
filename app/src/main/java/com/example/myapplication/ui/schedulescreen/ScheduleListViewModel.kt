@@ -15,6 +15,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import java.net.URL
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class ScheduleListViewModel: ViewModel() {
     val streams =  MutableStateFlow<MutableList<UIModel>>(mutableListOf())
@@ -27,12 +30,13 @@ class ScheduleListViewModel: ViewModel() {
                     rawData.add(UIModel(
                         event.title,
                         event.subtitle,
-                        event.date,
+                        beautifyDate(event.date),
                         convertImageURLIntoBitmap(event.imageUrl),
                         event.videoUrl
                     )
                     )
                 }
+                rawData = rawData.sortedBy { video -> video.date }.toMutableList()
                 streams.emit(rawData)
                 rawData = mutableListOf()
             }
@@ -46,5 +50,18 @@ class ScheduleListViewModel: ViewModel() {
         val inputStream = connection.getInputStream()
         bitmap = BitmapFactory.decodeStream(inputStream)
         return bitmap
+    }
+
+    fun beautifyDate(date: String?): String?{
+        val parsedDate = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
+        val currentDate = LocalDate.now()
+        val formattedTime = parsedDate.format(DateTimeFormatter.ofPattern("HH:mm"))
+
+        return when (parsedDate.toLocalDate()){
+            currentDate -> "Today, $formattedTime"
+            currentDate.minusDays(1) -> "Yesterday, $formattedTime"
+            currentDate.plusDays(1) -> "Tomorrow, $formattedTime"
+            else -> parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        }
     }
 }

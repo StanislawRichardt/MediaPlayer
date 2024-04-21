@@ -1,6 +1,4 @@
 package com.example.myapplication.model
-
-
 data class EventDataModel(
     val id: String?= null,
     val title: String? = null,

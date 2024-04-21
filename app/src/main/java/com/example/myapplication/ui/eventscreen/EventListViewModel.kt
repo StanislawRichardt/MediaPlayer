@@ -1,24 +1,17 @@
 package com.example.myapplication.ui.eventscreen
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import androidx.lifecycle.ViewModel
 import com.example.myapplication.api.EventsCall
 import com.example.myapplication.api.ResponseCallback
 import com.example.myapplication.model.UIModel
 import com.example.myapplication.model.EventDataModel
+import com.example.myapplication.ui.other.UIViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.net.MalformedURLException
-import java.net.URL
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
-open class EventListViewModel:ViewModel() {
+open class EventListViewModel:UIViewModel() {
     val events = MutableStateFlow<MutableList<UIModel>>(mutableListOf())
     var rawData: MutableList<UIModel> = mutableListOf()
 
-    fun fetchData(){
+    override fun fetchData(){
         EventsCall.start(object: ResponseCallback{
             override suspend fun onResponseLoaded(response: List<EventDataModel>) {
                 for(event in response){
@@ -36,31 +29,5 @@ open class EventListViewModel:ViewModel() {
                 rawData = mutableListOf()
             }
         })
-    }
-
-    fun convertImageURLIntoBitmap(url: String?): Bitmap? {
-        var bitmap: Bitmap? = null
-        try {
-            val connection = URL(url).openConnection()
-            connection.connect()
-            val inputStream = connection.getInputStream()
-            bitmap = BitmapFactory.decodeStream(inputStream)
-        }catch(e: MalformedURLException){
-            e.printStackTrace()
-        }
-        return bitmap
-    }
-
-    fun beautifyDate(date: String?): String?{
-        val parsedDate = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
-        val currentDate = LocalDate.now()
-        val formattedTime = parsedDate.format(DateTimeFormatter.ofPattern("HH:mm"))
-
-        return when (parsedDate.toLocalDate()){
-            currentDate -> "Today, $formattedTime"
-            currentDate.minusDays(1) -> "Yesterday, $formattedTime"
-            currentDate.plusDays(1) -> "Tomorrow, $formattedTime"
-            else -> parsedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-        }
     }
 }

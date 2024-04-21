@@ -19,7 +19,7 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 
-//TODO: zaminieć ten atrybut na eventlistviewmodel
+
 @Composable
 fun ScheduleScreen(scheduleListViewModel: ScheduleListViewModel, navController: NavController) {
 

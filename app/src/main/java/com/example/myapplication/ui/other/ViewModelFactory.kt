@@ -16,7 +16,6 @@ class EventListViewModelFactory: ViewModelProvider.Factory {
     }
 }
 
-//TODO: Usunąć to factory
 class ScheduleListViewModelFactory: ViewModelProvider.Factory {
     override fun <T: ViewModel> create(modelClass: Class<T>):T{
         if(modelClass.isAssignableFrom(ScheduleListViewModel::class.java)){

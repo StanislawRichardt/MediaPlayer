@@ -1,7 +1,5 @@
 package com.example.myapplication.model
-
-
-data class VideoModel(
+data class EventDataModel(
     val id: String?= null,
     val title: String? = null,
     val subtitle: String? = null,

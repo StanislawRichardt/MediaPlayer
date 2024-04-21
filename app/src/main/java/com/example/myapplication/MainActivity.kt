@@ -21,8 +21,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var scheduleListViewModel: ScheduleListViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        eventListViewModel = ViewModelProvider(this, EventListViewModelFactory()).get(EventListViewModel::class.java)
-        scheduleListViewModel = ViewModelProvider(this, ScheduleListViewModelFactory()).get(ScheduleListViewModel::class.java)
+        eventListViewModel = ViewModelProvider(this, EventListViewModelFactory())[EventListViewModel::class.java]
+        scheduleListViewModel = ViewModelProvider(this, ScheduleListViewModelFactory())[ScheduleListViewModel::class.java]
         setContent {
             MyApplicationTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {

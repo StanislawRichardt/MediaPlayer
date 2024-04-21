@@ -44,6 +44,7 @@ fun currentRoute(navController: NavController): String?{
     return navBackStackEntry?.destination?.route
 }
 
+//TODO: Usunąć ten atrybut
 @Composable
 fun PortfolioApp (eventListViewModel: EventListViewModel, scheduleListViewModel:ScheduleListViewModel) {
     val navController = rememberNavController()

@@ -6,20 +6,21 @@ import androidx.lifecycle.ViewModel
 import com.example.myapplication.api.EventsCall
 import com.example.myapplication.api.ResponseCallback
 import com.example.myapplication.model.UIModel
-import com.example.myapplication.model.VideoModel
+import com.example.myapplication.model.EventDataModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.net.MalformedURLException
 import java.net.URL
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class EventListViewModel:ViewModel() {
-    val streams = MutableStateFlow<MutableList<UIModel>>(mutableListOf())
+open class EventListViewModel:ViewModel() {
+    val events = MutableStateFlow<MutableList<UIModel>>(mutableListOf())
     var rawData: MutableList<UIModel> = mutableListOf()
 
     fun fetchData(){
         EventsCall.start(object: ResponseCallback{
-            override suspend fun onResponseLoaded(response: List<VideoModel>) {
+            override suspend fun onResponseLoaded(response: List<EventDataModel>) {
                 for(event in response){
                     rawData.add(UIModel(
                         event.title,
@@ -31,18 +32,22 @@ class EventListViewModel:ViewModel() {
                     )
                 }
                 rawData = rawData.sortedBy { video -> video.date }.toMutableList()
-                streams.emit(rawData)
+                events.emit(rawData)
                 rawData = mutableListOf()
             }
         })
     }
 
     fun convertImageURLIntoBitmap(url: String?): Bitmap? {
-        val bitmap: Bitmap?
-        val connection = URL(url).openConnection()
-        connection.connect()
-        val inputStream = connection.getInputStream()
-        bitmap = BitmapFactory.decodeStream(inputStream)
+        var bitmap: Bitmap? = null
+        try {
+            val connection = URL(url).openConnection()
+            connection.connect()
+            val inputStream = connection.getInputStream()
+            bitmap = BitmapFactory.decodeStream(inputStream)
+        }catch(e: MalformedURLException){
+            e.printStackTrace()
+        }
         return bitmap
     }
 

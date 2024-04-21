@@ -1,28 +1,23 @@
 package com.example.myapplication.api
 
-import android.graphics.BitmapFactory
-import android.util.Log
-import androidx.core.graphics.drawable.toDrawable
-import com.example.myapplication.model.VideoModel
+import com.example.myapplication.model.EventDataModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 
-object EventsCall:APICalls {
+object EventsCall:DAZNAPICalls {
 
     private var callback: ResponseCallback? = null
 
     fun start(callback: ResponseCallback){
         this.callback = callback
-        val eventsCall: Call<List<VideoModel>> = daznAPI.getEvents()
+        val eventsCall: Call<List<EventDataModel>> = daznAPI.getEvents()
         eventsCall.enqueue(this)
     }
 
-    override fun onResponse(call: Call<List<VideoModel>>, response: Response<List<VideoModel>>) {
+    override fun onResponse(call: Call<List<EventDataModel>>, response: Response<List<EventDataModel>>) {
         CoroutineScope(Dispatchers.IO).launch {
             callback?.onResponseLoaded(response.body() ?: listOf())
         }

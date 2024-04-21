@@ -14,11 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.myapplication.ui.other.VideoComposable
+import com.example.myapplication.ui.other.EventComposable
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 
+//TODO: zaminieć ten atrybut na eventlistviewmodel
 @Composable
 fun ScheduleScreen(scheduleListViewModel: ScheduleListViewModel, navController: NavController) {
 
@@ -39,7 +40,7 @@ fun ScheduleScreen(scheduleListViewModel: ScheduleListViewModel, navController: 
                         .fillMaxWidth()){
                     LazyColumn{
                         itemsIndexed(mutableVideos.value){ _, video ->
-                            VideoComposable(video = video, navController)
+                            EventComposable(event = video, navController)
                         }
                     }
                 }

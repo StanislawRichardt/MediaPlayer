@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.myapplication.ui.other.VideoComposable
+import com.example.myapplication.ui.other.EventComposable
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -22,7 +22,7 @@ import kotlinx.coroutines.isActive
 @Composable
 fun EventScreen(eventListViewModel: EventListViewModel, navController:NavController) {
 
-    val mutableVideos = eventListViewModel.streams.collectAsStateWithLifecycle()
+    val mutableEvents = eventListViewModel.events.collectAsStateWithLifecycle()
 
     LaunchedEffect(key1 = true) {
         while (isActive) {
@@ -40,8 +40,8 @@ fun EventScreen(eventListViewModel: EventListViewModel, navController:NavControl
                         .padding(it)
                         .fillMaxWidth()){
                     LazyColumn{
-                        itemsIndexed(mutableVideos.value){ _, video ->
-                            VideoComposable(video = video, navController)
+                        itemsIndexed(mutableEvents.value){ _, event ->
+                            EventComposable(event = event, navController)
                         }
                     }
         }}

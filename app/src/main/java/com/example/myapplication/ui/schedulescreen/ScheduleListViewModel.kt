@@ -3,17 +3,11 @@ package com.example.myapplication.ui.schedulescreen
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.api.ImageProvider
 import com.example.myapplication.api.ResponseCallback
 import com.example.myapplication.api.ScheduleCall
 import com.example.myapplication.model.UIModel
-import com.example.myapplication.model.VideoModel
+import com.example.myapplication.model.EventDataModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
 import java.net.URL
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -25,7 +19,7 @@ class ScheduleListViewModel: ViewModel() {
 
     fun fetchData(){
         ScheduleCall.start(object: ResponseCallback{
-            override suspend fun onResponseLoaded(response: List<VideoModel>) {
+            override suspend fun onResponseLoaded(response: List<EventDataModel>) {
                 for(event in response){
                     rawData.add(UIModel(
                         event.title,

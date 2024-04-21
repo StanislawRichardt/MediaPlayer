@@ -1,21 +1,17 @@
 package com.example.myapplication.api
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import com.example.myapplication.model.VideoModel
+import com.example.myapplication.model.EventDataModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
-interface APICalls: Callback<List<VideoModel>> {
+interface DAZNAPICalls: Callback<List<EventDataModel>> {
 
     val gson: Gson
         get() = GsonBuilder().setLenient().create()
@@ -39,7 +35,7 @@ interface APICalls: Callback<List<VideoModel>> {
         get() = connection.create(DAZNAPI::class.java)
 
 
-    override fun onFailure(call: Call<List<VideoModel>>, t: Throwable) {
+    override fun onFailure(call: Call<List<EventDataModel>>, t: Throwable) {
         t.printStackTrace()
     }
 

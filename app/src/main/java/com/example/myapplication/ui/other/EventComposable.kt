@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.myapplication.R
 import com.example.myapplication.model.UIModel
 import com.example.myapplication.ui.theme.MyApplicationTheme
@@ -23,8 +24,6 @@ import java.net.URLEncoder
 
 @Composable
 fun EventComposable(event: UIModel, navController: NavController){
-
-    val thumbnail = event.image?.asImageBitmap()
 
     val imageModifier = if(event.videoUrl != null){
         Modifier
@@ -37,16 +36,16 @@ fun EventComposable(event: UIModel, navController: NavController){
 
     MyApplicationTheme {
         Row(Modifier.padding(10.dp))  {
-            if(thumbnail != null){
-                Image(
-                    bitmap = thumbnail,
+            if(event.image != null){
+                AsyncImage(
+                    model = event.image,
                     contentDescription = "Video picture",
                     modifier = imageModifier.size(120.dp).padding(0.dp,0.dp,10.dp,0.dp),
                     alignment = Alignment.TopStart
                 )
             }else{
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                AsyncImage(
+                    model = painterResource(id = R.drawable.ic_launcher_foreground),
                     contentDescription = "Video picture",
                     modifier = imageModifier
                 )
